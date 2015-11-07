@@ -12,7 +12,7 @@
 
 @protocol UILabelCounter<NSObject>
 
--(CGFloat)update:(CGFloat)t;
+-(double)update:(double)t;
 
 @end
 
@@ -34,7 +34,7 @@
 
 @implementation UILabelCounterLinear
 
--(CGFloat)update:(CGFloat)t
+-(double)update:(double)t
 {
     return t;
 }
@@ -43,7 +43,7 @@
 
 @implementation UILabelCounterEaseIn
 
--(CGFloat)update:(CGFloat)t
+-(double)update:(double)t
 {
     return powf(t, kUILabelCounterRate);
 }
@@ -52,7 +52,7 @@
 
 @implementation UILabelCounterEaseOut
 
--(CGFloat)update:(CGFloat)t{
+-(double)update:(double)t{
     return 1.0-powf((1.0-t), kUILabelCounterRate);
 }
 
@@ -60,10 +60,10 @@
 
 @implementation UILabelCounterEaseInOut
 
--(CGFloat) update: (CGFloat) t
+-(double) update: (double) t
 {
-	int sign =1;
-	int r = (int) kUILabelCounterRate;
+	long int sign =1;
+	long int r = (long int) kUILabelCounterRate;
 	if (r % 2 == 0)
 		sign = -1;
 	t *= 2;
@@ -79,12 +79,12 @@
 
 @interface UICountingLabel ()
 
-@property CGFloat startingValue;
-@property CGFloat destinationValue;
+@property double startingValue;
+@property double destinationValue;
 @property NSTimeInterval progress;
 @property NSTimeInterval lastUpdate;
 @property NSTimeInterval totalTime;
-@property CGFloat easingRate;
+@property double easingRate;
 
 @property (nonatomic, weak) NSTimer *timer;
 @property (nonatomic, strong) id<UILabelCounter> counter;
@@ -93,7 +93,7 @@
 
 @implementation UICountingLabel
 
--(void)countFrom:(CGFloat)value to:(CGFloat)endValue {
+-(void)countFrom:(double)value to:(double)endValue {
     
     if (self.animationDuration == 0.0f) {
         self.animationDuration = 2.0f;
@@ -102,7 +102,7 @@
     [self countFrom:value to:endValue withDuration:self.animationDuration];
 }
 
--(void)countFrom:(CGFloat)startValue to:(CGFloat)endValue withDuration:(NSTimeInterval)duration {
+-(void)countFrom:(double)startValue to:(double)endValue withDuration:(NSTimeInterval)duration {
     
     self.startingValue = startValue;
     self.destinationValue = endValue;
@@ -148,19 +148,19 @@
     self.timer = timer;
 }
 
-- (void)countFromCurrentValueTo:(CGFloat)endValue {
+- (void)countFromCurrentValueTo:(double)endValue {
     [self countFrom:[self currentValue] to:endValue];
 }
 
-- (void)countFromCurrentValueTo:(CGFloat)endValue withDuration:(NSTimeInterval)duration {
+- (void)countFromCurrentValueTo:(double)endValue withDuration:(NSTimeInterval)duration {
     [self countFrom:[self currentValue] to:endValue withDuration:duration];
 }
 
-- (void)countFromZeroTo:(CGFloat)endValue {
+- (void)countFromZeroTo:(double)endValue {
     [self countFrom:0.0f to:endValue];
 }
 
-- (void)countFromZeroTo:(CGFloat)endValue withDuration:(NSTimeInterval)duration {
+- (void)countFromZeroTo:(double)endValue withDuration:(NSTimeInterval)duration {
     [self countFrom:0.0f to:endValue withDuration:duration];
 }
 
@@ -184,7 +184,7 @@
     }
 }
 
-- (void)setTextValue:(CGFloat)value
+- (void)setTextValue:(double)value
 {
     if (self.attributedFormatBlock != nil) {
         self.attributedText = self.attributedFormatBlock(value);
@@ -196,9 +196,9 @@
     else
     {
         // check if counting with ints - cast to int
-        if([self.format rangeOfString:@"%(.*)d" options:NSRegularExpressionSearch].location != NSNotFound || [self.format rangeOfString:@"%(.*)i"].location != NSNotFound )
+        if([self.format rangeOfString:@"%(.*)ld" options:NSRegularExpressionSearch].location != NSNotFound || [self.format rangeOfString:@"%(.*)i"].location != NSNotFound )
         {
-            self.text = [NSString stringWithFormat:self.format,(int)value];
+            self.text = [NSString stringWithFormat:self.format,(long int)value];
         }
         else
         {
@@ -221,14 +221,14 @@
     }
 }
 
-- (CGFloat)currentValue {
+- (double)currentValue {
     
     if (self.progress >= self.totalTime) {
         return self.destinationValue;
     }
     
-    CGFloat percent = self.progress / self.totalTime;
-    CGFloat updateVal = [self.counter update:percent];
+    double percent = self.progress / self.totalTime;
+    double updateVal = [self.counter update:percent];
     return self.startingValue + (updateVal * (self.destinationValue - self.startingValue));
 }
 

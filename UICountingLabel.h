@@ -8,8 +8,8 @@ typedef NS_ENUM(NSInteger, UILabelCountingMethod) {
     UILabelCountingMethodLinear
 };
 
-typedef NSString* (^UICountingLabelFormatBlock)(CGFloat value);
-typedef NSAttributedString* (^UICountingLabelAttributedFormatBlock)(CGFloat value);
+typedef NSString* (^UICountingLabelFormatBlock)(double value);
+typedef NSAttributedString* (^UICountingLabelAttributedFormatBlock)(double value);
 
 @interface UICountingLabel : UILabel
 
@@ -21,16 +21,16 @@ typedef NSAttributedString* (^UICountingLabelAttributedFormatBlock)(CGFloat valu
 @property (nonatomic, copy) UICountingLabelAttributedFormatBlock attributedFormatBlock;
 @property (nonatomic, copy) void (^completionBlock)();
 
--(void)countFrom:(CGFloat)startValue to:(CGFloat)endValue;
--(void)countFrom:(CGFloat)startValue to:(CGFloat)endValue withDuration:(NSTimeInterval)duration;
+-(void)countFrom:(double)value to:(double)endValue;
+-(void)countFrom:(double)startValue to:(double)endValue withDuration:(NSTimeInterval)duration;
 
--(void)countFromCurrentValueTo:(CGFloat)endValue;
--(void)countFromCurrentValueTo:(CGFloat)endValue withDuration:(NSTimeInterval)duration;
+-(void)countFromCurrentValueTo:(double)endValue;
+-(void)countFromCurrentValueTo:(double)endValue withDuration:(NSTimeInterval)duration;
 
--(void)countFromZeroTo:(CGFloat)endValue;
--(void)countFromZeroTo:(CGFloat)endValue withDuration:(NSTimeInterval)duration;
+-(void)countFromZeroTo:(double)endValue;
+-(void)countFromZeroTo:(double)endValue withDuration:(NSTimeInterval)duration;
 
-- (CGFloat)currentValue;
+- (double)currentValue;
 
 @end
 
