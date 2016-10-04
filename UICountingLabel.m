@@ -205,6 +205,31 @@
             self.text = [NSString stringWithFormat:self.format,value];
         }
     }
+    if (self.makeDollarSignSmaller) {
+        [UICountingLabel makeDollarSmaller:self];
+    }
+}
+
++(void)makeDollarSmaller:(UILabel *)label{
+    CGFloat fontSize = label.font.pointSize;
+    NSDictionary *attrs = @{NSFontAttributeName:[UIFont fontWithName:@"ProximaNova-Light" size:fontSize * 0.65 ]};
+    NSDictionary *regAttrs = @{NSFontAttributeName:[UIFont fontWithName:@"ProximaNova-Light" size:fontSize ] };
+    NSRange range = [label.text rangeOfString:@"$"];
+    NSMutableAttributedString *attributedText =
+    [[NSMutableAttributedString alloc] initWithString:label.text
+                                           attributes:regAttrs];
+    [attributedText setAttributes:attrs range:range];
+    [label setAttributedText:attributedText];
+}
+
++(float)multiplierForDevice{
+    if(([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && [UIScreen mainScreen].bounds.size.height == 1366)){
+        return 2.2;
+    }else if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ) {
+        return 1.75;
+    }
+    
+    return 1.0;
 }
 
 - (void)setFormat:(NSString *)format {

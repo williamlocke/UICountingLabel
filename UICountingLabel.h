@@ -21,6 +21,8 @@ typedef NSAttributedString* (^UICountingLabelAttributedFormatBlock)(double value
 @property (nonatomic, copy) UICountingLabelAttributedFormatBlock attributedFormatBlock;
 @property (nonatomic, copy) void (^completionBlock)();
 
+@property BOOL makeDollarSignSmaller;
+
 -(void)countFrom:(double)value to:(double)endValue;
 -(void)countFrom:(double)startValue to:(double)endValue withDuration:(NSTimeInterval)duration;
 
